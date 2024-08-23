@@ -245,7 +245,8 @@ function Base.show(io::IO, ::MIME"text/plain", k::AbstractKernel{F,TT}) where {F
     print(io, "CUDA.$(nameof(typeof(k))) for $(k.f)($(join(TT.parameters, ", ")))")
 end
 
-@inline @generated function (kernel::AbstractKernel{F,TT})(args...; call_kwargs...) where {F,TT}
+@inline @generated function (kernel::AbstractKernel{F,TT})(args::Vararg{Any,N};
+                                                           call_kwargs...) where {F,TT,N}
     sig = Tuple{F, TT.parameters...}    # Base.signature_type with a function type
 
     # determine argument expressions
